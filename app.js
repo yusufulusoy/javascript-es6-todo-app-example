@@ -17,22 +17,8 @@ function eventListener() {
   form.addEventListener('submit', addTodo);
   document.addEventListener('DOMContentLoaded', loadAllTodosToUI);
   clear.addEventListener('click', clearAllTodos);
-  document.addEventListener('DOMContentLoaded', checkPlaceholder)
   list.addEventListener('click', removeTodo);
   filter.addEventListener('keyup', filterTodos);
-}
-
-function checkPlaceholder(e) {
-  let todos = getTodosFromStorage();
-  if (todos < 1) {
-    const item = document.createElement('li');
-    item.className = 'todo-placeholder list-group-item text-center';
-    item.textContent = 'No todo item yet.';
-    list.appendChild(item);
-  } else {
-    const placeholder = document.getElementsByClassName('todo-placeholder');
-    (placeholder.length > 0) ? placeholder.remove() : null;
-  }
 }
 
 /**
@@ -153,5 +139,17 @@ function removeTodoFromStorage(todo) {
 }
 
 function filterTodos(e) {
-  console.log(e.target);
+  const value = e.target.value;
+  const items = document.querySelectorAll('.list-group-item');
+
+  items.forEach(item => {
+    const text = item.textContent.toLowerCase();
+
+    if(text.indexOf(value) === -1) {
+      // Not found
+      item.setAttribute('style', 'display:none!important');
+    } else {
+      item.setAttribute('style', '');
+    }
+  })
 }
